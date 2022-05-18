@@ -1,0 +1,136 @@
+{% extends 'home/base.html' %}
+{% load static %}
+{% block title %} Gráficas | Cáncer Infantil{% endblock %}
+{% block content %}
+    <head>
+    <script type="text/javascript">
+    function showDiv1() {
+      document.getElementById("divesconder").style.visibility = "hidden";
+    }
+    setTimeout("showDiv1()", 10000); // after 15 sec
+    </script>
+    </head>
+    <!-- Content Start -->
+    <div id="main">
+        <!-- Title, Breadcrumb Start-->
+        <div class="breadcrumb-wrapper">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-6 col-md-6 col-xs-12 col-sm-6">
+                        <h2 class="title">Gráficas</h2>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-xs-12 col-sm-6">
+                        <div class="breadcrumbs pull-right">
+                            <ul>
+                                <li></li>
+                                <li><a href=# >Inicio</a></li>
+                                <li>Cáncer Infantil</li>
+                                <li>Gráficas</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Title, Breadcrumb End-->
+        <!-- Main Content start-->
+     <form method="post" name="frmFiltroGrafica" class="form-horizontal" action="{% url 'graficascancer' %}"
+        id="frmFiltroGrafica"> {% csrf_token %}
+        <div id="content" class="container">
+            <h2>Consultar:</h2>
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="col-sm-3">
+                        <div>
+                            <label>Estado:</label>
+                        </div>
+                        <div>
+                            <select class="form form-control" name="frmEstado"
+                                    id="frmEstado">
+                                    <option value="TODOS">TODOS</option>
+                                    {% if defaultEstado != "" %}
+                                        <option value="{{ defaultEstado}}" selected hidden>{{ defaultEstado.upper}}</option>
+                                    {% endif %}
+                                    {% for estados in republica %}
+                                        <option value="{{ estados.ent_resid}}">{{ estados.ent_resid.upper}}</option>
+                                    {% endfor %}
+
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div>
+                            <label>Tipo de Grafica:</label>
+                        </div>
+                        <div>
+                            <select class="form form-control" name="frmTipo"
+                                    id="frmTipo">
+                                {% if defaultRango != "" %}
+                                        <option value="{{ defaultTipo}}" selected hidden>{{ defaultTipo.upper}}</option>
+                                {% endif %}
+                                {% for tipos in tipoGrafica %}
+                                            <option value="{{ tipos }}">{{ tipos.upper}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div>
+                            <label>Año:</label>
+                        </div>
+                        <div>
+                            <select class="form form-control" name="frmAnio"
+                                    id="frmAnio">
+                                    <option value="TODOS">TODOS</option>
+                                    {% if defaultAnio != "" %}
+                                        <option value="{{ defaultAnio}}" selected hidden>{{ defaultAnio}}</option>
+                                    {% endif %}
+                                    {% for anio in anio %}
+                                        <option value="{{ anio.anio_regis}}" >{{ anio.anio_regis}}</option>
+                                    {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div>
+                            <label>Rango de Edades:</label>
+                        </div>
+                        <div>
+                            <select class="form form-control" name="frmRangoEdad"
+                                    id="frmRangoEdad" required>
+                                <option disabled value="" selected hidden>SELLECIONE UN RANGO</option>
+                                {% if defaultRango != "" %}
+                                        <option value="{{ defaultRango}}" selected hidden>{{ defaultRango.upper}}</option>
+                                {% endif %}
+                                {% for agruedad in agruedad %}
+                                    <option value="{{ agruedad.agru_edad}}">{{ agruedad.agru_edad.upper}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 text-center"
+                         style="padding-top: 2em; padding-bottom: 2em;">
+                        <a href=#>
+                            <input name="btnConsultar" id="btnConsultar" type="submit" title="Consultar"
+                                         class="btn&#x20;btn-primary"
+                                         value="Consultar"> </a>
+                    </div>
+                </div>
+            <div class="col-sm-12 text-center" id = "divesconder" >
+                    <h4> {{ div }} </h4>
+                </div>
+            <div id="grafica" class="container">
+                <h2>{{ texto }}</h2>
+                <div>{{ fig | safe }}</div>
+            </div>
+            </div>
+        </div>
+     </form>
+    </div>
+    <div>
+
+    </div>
+
+    <!-- Main Content end-->
+    <!-- Content End -->
+{% endblock %}
